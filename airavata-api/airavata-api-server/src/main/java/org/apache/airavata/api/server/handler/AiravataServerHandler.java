@@ -37,6 +37,7 @@ import org.apache.airavata.messaging.core.MessageContext;
 import org.apache.airavata.messaging.core.MessagingFactory;
 import org.apache.airavata.messaging.core.Publisher;
 import org.apache.airavata.messaging.core.Type;
+import org.apache.airavata.model.WorkflowModel;
 import org.apache.airavata.model.appcatalog.accountprovisioning.SSHAccountProvisioner;
 import org.apache.airavata.model.appcatalog.accountprovisioning.SSHAccountProvisionerConfigParam;
 import org.apache.airavata.model.appcatalog.accountprovisioning.SSHAccountProvisionerConfigParamType;
@@ -78,7 +79,6 @@ import org.apache.airavata.model.status.ExperimentState;
 import org.apache.airavata.model.status.ExperimentStatus;
 import org.apache.airavata.model.status.JobStatus;
 import org.apache.airavata.model.status.QueueStatusModel;
-import org.apache.airavata.model.workflow.AiravataWorkflow;
 import org.apache.airavata.model.workspace.Gateway;
 import org.apache.airavata.model.workspace.Notification;
 import org.apache.airavata.model.workspace.Project;
@@ -4813,7 +4813,7 @@ public class AiravataServerHandler implements Airavata.Iface {
             registryClientPool.returnResource(regClient);
             return result;
         } catch (Exception e) {
-            String msg = "Error in retrieving all workflow Ids.";
+            String msg = "Error in retrieving all workflow template Ids.";
             logger.error(msg, e);
             AiravataSystemException exception = new AiravataSystemException(AiravataErrorType.INTERNAL_ERROR);
             exception.setMessage(msg+" More info : " + e.getMessage());
@@ -4841,15 +4841,15 @@ public class AiravataServerHandler implements Airavata.Iface {
 
     @Override
     @SecurityCheck
-    public AiravataWorkflow getWorkflow(AuthzToken authzToken, String workflowId)
+    public WorkflowModel getWorkflow(AuthzToken authzToken, String workflowTemplateId)
             throws InvalidRequestException, AiravataClientException, AuthorizationException, AiravataSystemException, TException {
         RegistryService.Client regClient = registryClientPool.getResource();
         try {
-            AiravataWorkflow result = regClient.getWorkflow(workflowId);
+            WorkflowModel result = regClient.getWorkflow(workflowTemplateId);
             registryClientPool.returnResource(regClient);
             return result;
         } catch (Exception e) {
-            String msg = "Error in retrieving the workflow "+workflowId+".";
+            String msg = "Error in retrieving the workflow "+workflowTemplateId+".";
             logger.error(msg, e);
             AiravataSystemException exception = new AiravataSystemException(AiravataErrorType.INTERNAL_ERROR);
             exception.setMessage(msg+" More info : " + e.getMessage());
@@ -4860,15 +4860,15 @@ public class AiravataServerHandler implements Airavata.Iface {
 
     @Override
     @SecurityCheck
-    public void deleteWorkflow(AuthzToken authzToken, String workflowId)
+    public void deleteWorkflow(AuthzToken authzToken, String workflowTemplateId)
             throws InvalidRequestException, AiravataClientException, AiravataSystemException, AuthorizationException, TException {
         RegistryService.Client regClient = registryClientPool.getResource();
         try {
-            regClient.deleteWorkflow(workflowId);
+            regClient.deleteWorkflow(workflowTemplateId);
             registryClientPool.returnResource(regClient);
             return;
         } catch (Exception e) {
-            String msg = "Error in deleting the workflow "+workflowId+".";
+            String msg = "Error in deleting the workflow "+workflowTemplateId+".";
             logger.error(msg, e);
             AiravataSystemException exception = new AiravataSystemException(AiravataErrorType.INTERNAL_ERROR);
             exception.setMessage(msg+" More info : " + e.getMessage());
@@ -4879,7 +4879,7 @@ public class AiravataServerHandler implements Airavata.Iface {
 
     @Override
     @SecurityCheck
-    public String registerWorkflow(AuthzToken authzToken, String gatewayId, AiravataWorkflow workflow)
+    public String registerWorkflow(AuthzToken authzToken, String gatewayId, WorkflowModel workflow)
             throws InvalidRequestException, AiravataClientException, AiravataSystemException, AuthorizationException, TException {
         RegistryService.Client regClient = registryClientPool.getResource();
         try {
@@ -4898,11 +4898,11 @@ public class AiravataServerHandler implements Airavata.Iface {
 
     @Override
     @SecurityCheck
-    public void updateWorkflow(AuthzToken authzToken, String workflowId, AiravataWorkflow workflow)
+    public void updateWorkflow(AuthzToken authzToken, String workflowTemplateId, WorkflowModel workflow)
             throws InvalidRequestException, AiravataClientException, AiravataSystemException, AuthorizationException, TException {
         RegistryService.Client regClient = registryClientPool.getResource();
         try {
-            regClient.updateWorkflow(workflowId, workflow);
+            regClient.updateWorkflow(workflowTemplateId, workflow);
             registryClientPool.returnResource(regClient);
             return;
         } catch (Exception e) {
@@ -4917,11 +4917,11 @@ public class AiravataServerHandler implements Airavata.Iface {
 
     @Override
     @SecurityCheck
-    public String getWorkflowId(AuthzToken authzToken, String workflowName)
+    public String getWorkflowTemplateId(AuthzToken authzToken, String workflowName)
             throws InvalidRequestException, AiravataClientException, AiravataSystemException, AuthorizationException, TException {
         RegistryService.Client regClient = registryClientPool.getResource();
         try {
-            String result = regClient.getWorkflowId(workflowName);
+            String result = regClient.getWorkflowTemplateId(workflowName);
             registryClientPool.returnResource(regClient);
             return result;
         } catch (Exception e) {
